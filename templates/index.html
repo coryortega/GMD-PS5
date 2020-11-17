@@ -13,13 +13,12 @@
             <th>Availability</th>
             <th>Time</th>
         </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td>
-                <a>Hi</a>
-            </td>
-        </tr>
+        {% for task in tasks %}
+            <tr>
+                <td>{{ task.content }}</td>
+                <td>{{ task.date_created }}</td>
+            </tr>
+        {% endfor %}
     </table>
 </div>
 {% endblock %}
