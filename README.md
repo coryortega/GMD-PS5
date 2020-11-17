@@ -1,3 +1,3 @@
-# GMD-PS5
+# GMD-PS5 😤
 
-Get Me Data Playstation 5
+Get Me Dat Playstation 5 😤
