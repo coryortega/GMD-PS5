@@ -1,0 +1,12 @@
+body {
+    margin: 0;
+    font-family: sans-serif;
+}
+
+table {
+    border: 2px solid black;
+}
+
+.content {
+    border: 2px solid blue;
+}
