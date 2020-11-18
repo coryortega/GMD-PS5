@@ -13,10 +13,10 @@
             <th>Availability</th>
             <th>Time</th>
         </tr>
-        {% for task in tasks %}
+        {% for entry in entries %}
             <tr>
-                <td>{{ task.content }}</td>
-                <td>{{ task.date_created }}</td>
+                <td>{{ entry.content }}</td>
+                <td>{{ entry.date_created }}</td>
             </tr>
         {% endfor %}
     </table>
