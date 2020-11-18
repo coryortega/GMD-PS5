@@ -11,7 +11,7 @@ load_dotenv(find_dotenv())
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://bsdvckxoaifygn:0f9228e3f1c12b105402ccfde819b2d73e853007ab93c00223f3c8a563070d21@ec2-54-82-208-124.compute-1.amazonaws.com:5432/de6pk3rpal71ti'
 db = SQLAlchemy(app)
 
 text_alert = "GO GET DAT PLAYSTATION 5 \n\nhttps://www.amazon.com/PlayStation-5-Console/dp/B08FC5L3RG?ref_=ast_sto_dp"
