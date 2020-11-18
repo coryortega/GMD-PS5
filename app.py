@@ -3,9 +3,14 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from GMD_PS5 import scrape
 from SMS import send
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())
+
+DATABASE_URI = os.environ.get("DATABASE_URI")
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///GMD.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URI
 db = SQLAlchemy(app)
 
 text_alert = "GO GET DAT PLAYSTATION 5 \n\nhttps://www.amazon.com/PlayStation-5-Console/dp/B08FC5L3RG?ref_=ast_sto_dp"
