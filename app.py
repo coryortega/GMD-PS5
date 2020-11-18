@@ -9,21 +9,21 @@ from enum import Enum
 
 load_dotenv(find_dotenv())
 
-data = scrape('https://www.amazon.com/PlayStation-5-Console/dp/B08FC5L3RG?ref_=ast_sto_dp')
-
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 db = SQLAlchemy(app)
 
-text_alert = "GO GET DAT PLAYSTATION 5 \n\nhttps://www.amazon.com/PlayStation-5-Console/dp/B08FC5L3RG?ref_=ast_sto_dp"
 
+# Edit enum
 class Edit(Enum):
     initialize = 0
     delete = 1
     add = 2
 
+
+# DB Model Setup
 class GMD(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String(200), nullable=False)
@@ -33,6 +33,7 @@ class GMD(db.Model):
         return '<Entry %r>' % self.id
 
 
+# Flask Routes
 @app.route('/', methods=['GET'])
 def index():
     entries = GMD.query.order_by(GMD.date_created).limit(30).all()
@@ -40,30 +41,30 @@ def index():
 
 
 @app.route('/gmd', methods=['GET'])
-def getAvailability():
+def get_availability():
     data = scrape('https://www.amazon.com/PlayStation-5-Console/dp/B08FC5L3RG?ref_=ast_sto_dp')
     dbLength = len(GMD.query.all())
 
     if dbLength == 0:
-        return editDB(Edit.initialize, data)
+        return edit_db(Edit.initialize, data)
 
     else:
         if dbLength > 120:
-            return editDB(Edit.delete, data)
+            return edit_db(Edit.delete, data)
 
-        return editDB(Edit.add, data)
+        return edit_db(Edit.add, data)
+
 
 # DB Helper Function 
-def editDB(type_of_edit, scrape_data):
-
+def edit_db(type_of_edit, scrape_data):
     # Initializing DB
     if type_of_edit == Edit.initialize:
-        newEntry = GMD(content= data["price"] if data["price"] else "Unavailable")
+        newEntry = GMD(content=scrape_data["price"] if scrape_data["price"] else "Unavailable")
         try:
             db.session.add(newEntry)
             db.session.commit()
             return redirect('/')
-        except:
+        finally:
             return 'There was a problem adding that entry'
 
     # Deleting if size of DB exceeds 120
@@ -72,23 +73,24 @@ def editDB(type_of_edit, scrape_data):
         try:
             db.session.delete(oldestEntry)
             db.session.commit()
-        except:
+        finally:
             return 'There was a problem deleting that entry'
     
     # Adding to DB
     if type_of_edit == Edit.add:
         lastEntry = GMD.query.order_by(GMD.date_created.desc()).first()
-        if lastEntry.content == 'Unavailable' and data["price"]:
+        if lastEntry.content == 'Unavailable' and scrape_data["price"]:
+            text_alert = "GO GET DAT PLAYSTATION 5 \n\nhttps://www.amazon.com/" \
+                         "PlayStation-5-Console/dp/B08FC5L3RG?ref_=ast_sto_dp"
             send(text_alert)
 
-        newEntry = GMD(content= data["price"] if data["price"] else "Unavailable")
+        newEntry = GMD(content=scrape_data["price"] if scrape_data["price"] else "Unavailable")
         try:
             db.session.add(newEntry)
             db.session.commit()
             return redirect('/')
-        except:
+        finally:
             return 'There was a problem adding that entry'
-
 
 
 if __name__ == "__ main__":
