@@ -9,18 +9,20 @@ from enum import Enum
 
 load_dotenv(find_dotenv())
 
-DATABASE_URL = os.environ.get("DATABASE_URL")
+data = scrape('https://www.amazon.com/PlayStation-5-Console/dp/B08FC5L3RG?ref_=ast_sto_dp')
 
-class Edit(Enum):
-    initialize = 0
-    delete = 1
-    add = 2
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 db = SQLAlchemy(app)
 
 text_alert = "GO GET DAT PLAYSTATION 5 \n\nhttps://www.amazon.com/PlayStation-5-Console/dp/B08FC5L3RG?ref_=ast_sto_dp"
+
+class Edit(Enum):
+    initialize = 0
+    delete = 1
+    add = 2
 
 class GMD(db.Model):
     id = db.Column(db.Integer, primary_key=True)
