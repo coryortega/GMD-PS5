@@ -50,7 +50,9 @@ def get_availability():
 
     else:
         if dbLength > 120:
-            return edit_db(Edit.delete, data)
+            error_message = edit_db(Edit.delete, data)
+            if error_message is not None:
+                return error_message
 
         return edit_db(Edit.add, data)
 
