@@ -1,5 +1,6 @@
 from flask import Flask, render_template, url_for, request, redirect
 import os
+import psycopg2
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from GMD_PS5 import scrape
@@ -10,6 +11,8 @@ from enum import Enum
 load_dotenv(find_dotenv())
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
+
+conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
@@ -31,6 +34,9 @@ class GMD(db.Model):
 
     def __repr__(self):
         return '<Entry %r>' % self.id
+
+
+from model import GMD
 
 
 # Flask Routes
@@ -96,4 +102,4 @@ def edit_db(type_of_edit, scrape_data):
 
 
 if __name__ == "__ main__":
-    app.run(debug=True)
+    app.run()
