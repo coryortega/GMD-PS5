@@ -9,6 +9,8 @@ from enum import Enum
 
 load_dotenv(find_dotenv())
 
+data = scrape('https://www.amazon.com/PlayStation-5-Console/dp/B08FC5L3RG?ref_=ast_sto_dp')
+
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
 class Edit(Enum):
@@ -43,13 +45,13 @@ def getAvailability():
     dbLength = len(GMD.query.all())
 
     if dbLength == 0:
-        editDB(Edit.initialize)
+        return editDB(Edit.initialize)
 
     else:
         if dbLength > 120:
             editDB(Edit.delete)
 
-        editDB(Edit.add)
+        return editDB(Edit.add)
 
 # DB Helper Function 
 def editDB(type_of_edit):
