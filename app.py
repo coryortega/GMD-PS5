@@ -67,11 +67,11 @@ def editDB(type_of_edit):
     # Deleting if size of DB exceeds 120
     if type_of_edit == Edit.delete:
         oldestEntry = GMD.query.order_by(GMD.date_created).first()
-            try:
-                db.session.delete(oldestEntry)
-                db.session.commit()
-            except:
-                return 'There was a problem deleting that entry'
+        try:
+            db.session.delete(oldestEntry)
+            db.session.commit()
+        except:
+            return 'There was a problem deleting that entry'
     
     # Adding to DB
     if type_of_edit == Edit.add:
