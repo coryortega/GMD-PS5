@@ -65,6 +65,7 @@ def getAvailability():
             return redirect('/')
         except:
             return 'There was a problem adding that entry'
+            
 
 
 if __name__ == "__ main__":
