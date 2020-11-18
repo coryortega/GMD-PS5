@@ -5,10 +5,16 @@ from datetime import datetime
 from GMD_PS5 import scrape
 from SMS import send
 from dotenv import load_dotenv, find_dotenv
+from enum import Enum
 
 load_dotenv(find_dotenv())
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
+
+class Edit(Enum):
+    initialize = 0
+    delete = 1
+    add = 2
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
@@ -37,6 +43,19 @@ def getAvailability():
     dbLength = len(GMD.query.all())
 
     if dbLength == 0:
+        editDB(Edit.initialize)
+
+    else:
+        if dbLength > 120:
+            editDB(Edit.delete)
+
+        editDB(Edit.add)
+
+# DB Helper Function 
+def editDB(type_of_edit):
+
+    # Initializing DB
+    if type_of_edit == Edit.initialize:
         newEntry = GMD(content= data["price"] if data["price"] else "Unavailable")
         try:
             db.session.add(newEntry)
@@ -45,15 +64,17 @@ def getAvailability():
         except:
             return 'There was a problem adding that entry'
 
-    else:
-        if dbLength > 120:
-            oldestEntry = GMD.query.order_by(GMD.date_created).first()
+    # Deleting if size of DB exceeds 120
+    if type_of_edit == Edit.delete:
+        oldestEntry = GMD.query.order_by(GMD.date_created).first()
             try:
                 db.session.delete(oldestEntry)
                 db.session.commit()
             except:
                 return 'There was a problem deleting that entry'
-
+    
+    # Adding to DB
+    if type_of_edit == Edit.add:
         lastEntry = GMD.query.order_by(GMD.date_created.desc()).first()
         if lastEntry.content == 'Unavailable' and data["price"]:
             send(text_alert)
@@ -65,7 +86,7 @@ def getAvailability():
             return redirect('/')
         except:
             return 'There was a problem adding that entry'
-            
+
 
 
 if __name__ == "__ main__":
