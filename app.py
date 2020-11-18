@@ -16,13 +16,7 @@ db = SQLAlchemy(app)
 
 text_alert = "GO GET DAT PLAYSTATION 5 \n\nhttps://www.amazon.com/PlayStation-5-Console/dp/B08FC5L3RG?ref_=ast_sto_dp"
 
-class GMD(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.String(200), nullable=False)
-    date_created = db.Column(db.DateTime, default=datetime.utcnow)
-
-    def __repr__(self):
-        return '<Entry %r>' % self.id
+from model import GMD
 
 
 @app.route('/', methods=['GET'])
@@ -69,4 +63,4 @@ def getAvailability():
 
 
 if __name__ == "__ main__":
-    app.run(debug=True)
+    app.run()
