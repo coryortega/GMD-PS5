@@ -43,16 +43,16 @@ def getAvailability():
     dbLength = len(GMD.query.all())
 
     if dbLength == 0:
-        editDB(Edit.initialize)
+        return editDB(Edit.initialize, data)
 
     else:
         if dbLength > 120:
-            editDB(Edit.delete)
+            return editDB(Edit.delete, data)
 
-        editDB(Edit.add)
+        return editDB(Edit.add, data)
 
 # DB Helper Function 
-def editDB(type_of_edit):
+def editDB(type_of_edit, scrape_data):
 
     # Initializing DB
     if type_of_edit == Edit.initialize:
