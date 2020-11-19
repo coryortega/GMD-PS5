@@ -13,11 +13,12 @@ DATABASE_URL = os.environ.get("DATABASE_URL")
 
 # conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 
+
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://ekkuyeeowmyaib:495d4077d510e88a1cadaedd6aec945989aa928bbb379662fd8fa2b130c55976@ec2-75-101-232-85.compute-1.amazonaws.com:5432/dcjiuhl8ok8e14'
+app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
+
 db = SQLAlchemy(app)
 
-text_alert = "GO GET DAT PLAYSTATION 5 \n\nhttps://www.amazon.com/PlayStation-5-Console/dp/B08FC5L3RG?ref_=ast_sto_dp"
 
 from model import GMD
 
@@ -38,9 +39,9 @@ def getAvailability():
         try:
             db.session.add(newEntry)
             db.session.commit()
-            return redirect('/')
+            return "Get this man his PS5...", 200
         except:
-            return 'There was a problem adding that entry'
+            return 'There was a problem adding that entry', 400
 
     else:
         if dbLength > 120:
@@ -49,19 +50,20 @@ def getAvailability():
                 db.session.delete(oldestEntry)
                 db.session.commit()
             except:
-                return 'There was a problem deleting that entry'
+                return 'There was a problem deleting that entry', 400
 
         lastEntry = GMD.query.order_by(GMD.date_created.desc()).first()
         if lastEntry.content == 'Unavailable' and data["price"]:
+            text_alert = "GO GET DAT PLAYSTATION 5 \n\nhttps://www.amazon.com/PlayStation-5-Console/dp/B08FC5L3RG?ref_=ast_sto_dp"
             send(text_alert)
 
         newEntry = GMD(content= data["price"] if data["price"] else "Unavailable")
         try:
             db.session.add(newEntry)
             db.session.commit()
-            return redirect('/')
+            return "Get this man his PS5...", 200
         except:
-            return 'There was a problem adding that entry'
+            return 'There was a problem adding that entry', 400
             
 
 
