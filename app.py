@@ -14,6 +14,7 @@ DATABASE_URL = os.environ.get("DATABASE_URL")
 
 # conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://ekkuyeeowmyaib' \
                                         ':495d4077d510e88a1cadaedd6aec945989aa928bbb379662fd8fa2b130c55976@ec2-75-101' \
