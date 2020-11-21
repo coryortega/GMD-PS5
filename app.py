@@ -99,9 +99,9 @@ def edit_db(type_of_edit, scrape_data):
         try:
             db.session.add(newEntry)
             db.session.commit()
-            return redirect('/')
+            return "Get this man his PS5...", 200
         finally:
-            return 'There was a problem adding that entry'
+            return 'There was a problem adding that entry', 400
 
 
 if __name__ == "__ main__":
