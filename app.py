@@ -16,9 +16,7 @@ DATABASE_URL = os.environ.get("DATABASE_URL")
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://ekkuyeeowmyaib' \
-                                        ':495d4077d510e88a1cadaedd6aec945989aa928bbb379662fd8fa2b130c55976@ec2-75-101' \
-                                        '-232-85.compute-1.amazonaws.com:5432/dcjiuhl8ok8e14 '
+app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 db = SQLAlchemy(app)
 
 
