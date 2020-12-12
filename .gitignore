@@ -1,2 +1,4 @@
 .env
 GMD.db
+*/__pycache__/*
+/__pycache__/
