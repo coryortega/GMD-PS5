@@ -17,6 +17,10 @@ table {
     width: 100%;
 }
 
+h1 {
+    text-align: center;
+}
+
 th {
     height: 30px;
 }
